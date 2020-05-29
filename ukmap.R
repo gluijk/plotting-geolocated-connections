@@ -1,5 +1,5 @@
 # Dibujando conexiones geolocalizadas con R 
-# www.datosimagensonido.com
+# www.overfitting.net
 
 # Paquetes requeridos
 install.packages("data.table")
@@ -40,11 +40,11 @@ XMAX=max(max(DT$x0),max(DT$x1))
 YMIN=min(min(DT$y0),min(DT$y1))
 YMAX=max(max(DT$y0),max(DT$y1))
 
-# Resoluci髇 imagen de salida
+# Resoluci贸n imagen de salida
 WIDTH = 2000L
 HEIGHT = round(WIDTH/(XMAX-XMIN)*(YMAX-YMIN))
 
-# Normalizamos a la resoluci髇 de salida
+# Normalizamos a la resoluci贸n de salida
 DT$x0=round(1 + (WIDTH-1)  / (XMAX-XMIN) * (DT$x0-XMIN))
 DT$x1=round(1 + (WIDTH-1)  / (XMAX-XMIN) * (DT$x1-XMIN))
 DT$y0=round(1 + (HEIGHT-1) / (YMAX-YMIN) * (DT$y0-YMIN))
@@ -53,7 +53,7 @@ DT$y1=round(1 + (HEIGHT-1) / (YMAX-YMIN) * (DT$y1-YMIN))
 # Cargamos en matriz agrupando de nuevo
 MAagrup=as.matrix(DT[, list( trips = sum(trips) ), by=.(x0,y0,x1,y1)])
 
-# Matriz acumulador vac韆
+# Matriz acumulador vac铆a
 MAacum=array(0, c(WIDTH, HEIGHT))
 
 # Recorremos matriz agrupada para cargar matriz acumulador
@@ -75,7 +75,7 @@ for (k in 1:nrow(MAagrup)) {
         i <- x0:x1
         j <- round(y0 + m * (i - x0))
         indices <- cbind(i, j)
-        MAacum[indices] <- MAacum[indices] + trips # Acumulaci髇 vectorizada
+        MAacum[indices] <- MAacum[indices] + trips # Acumulaci贸n vectorizada
   
     } else { # Recta de |m| > 1
     
@@ -91,16 +91,16 @@ for (k in 1:nrow(MAagrup)) {
         i <- x0:x1
         j <- round(y0 + m * (i - x0))
         indices <- cbind(j, i)
-        MAacum[indices] <- MAacum[indices] + trips # Acumulaci髇 vectorizada
+        MAacum[indices] <- MAacum[indices] + trips # Acumulaci贸n vectorizada
     
     }
 }
 
-# Guardamos matriz acumulador como gr醘ico PNG monocromo
+# Guardamos matriz acumulador como gr谩fico PNG monocromo
 writePNG((MAacum/max(MAacum))^0.8, target="ukmap.png")
 
 
-# Versi髇 con acumulador encapsulado en una funci髇 por Carlos Gil Bellosta
+# Versi贸n con acumulador encapsulado en una funci贸n por Carlos Gil Bellosta
 indices.acumular <- function(x0, y0, x1, y1) {
   if (y0 == y1) return(cbind(x0:x1, y0)) # Recta de m=0 o un punto
   if (abs(x1 - x0) >= abs(y1 - y0)) { # Recta de 0 < |m| <= 1

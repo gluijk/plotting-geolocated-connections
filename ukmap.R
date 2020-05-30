@@ -1,5 +1,6 @@
 # Dibujando conexiones geolocalizadas con R 
 # www.overfitting.net
+# https://www.overfitting.net/2016/08/dibujando-conexiones-geolocalizadas-con_20.html
 
 # Paquetes requeridos
 install.packages("data.table")
